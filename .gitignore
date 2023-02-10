@@ -9,10 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.gitignore
-*.gitattributes
-*.vcxproj
-*.vcxproj.filters
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -101,6 +98,11 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+*.gitignore
+*.gitattributes
+*.vcxproj
+*.vcxproj.filters
+
 
 # Chutzpah Test files
 _Chutzpah*
