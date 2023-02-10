@@ -98,10 +98,10 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-.gitignore
-.gitattributes
-.vcxproj
-.vcxproj.filters
+*.gitignore
+*.gitattributes
+*.vcxproj
+*.vcxproj.filters
 
 
 # Chutzpah Test files
