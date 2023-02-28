@@ -3,6 +3,21 @@
 
 namespace lab618
 {
+
+    struct MyStruct
+    {
+        int a;
+        double b;
+
+        explicit operator bool() const
+        {
+            if (a != 0 || b != 0)
+                return true;
+            return false;
+        }
+    };
+
+
     template<class T>
     class CSingleLinkedList
     {
@@ -17,6 +32,7 @@ namespace lab618
             leaf(const T& _data, leaf* _pnext) : data(_data), pnext(_pnext)
             {
             }
+
         };
     public:
         class CIterator
@@ -26,6 +42,14 @@ namespace lab618
                  : m_pCurrent(0), m_pBegin(0)
              {
              }*/
+
+            explicit operator bool() const
+            {
+                if (m_pCurrent != nullptr)
+                    return true;
+                else
+                    return false;
+            }
 
             CIterator(leaf* p)
             {
@@ -69,7 +93,7 @@ namespace lab618
                 else  m_pCurrent = nullptr;
             }
 
-            T& getData()
+            T getData()
             {
                 if (m_pCurrent)
                     return m_pCurrent->data;
@@ -278,6 +302,7 @@ namespace lab618
                 else if (p->pnext == nullptr)
                     m_pEnd = p->pnext;
 
+                m_pBegin = p->pnext;
                 m_pCurrent = p;
             }
 
@@ -315,7 +340,9 @@ namespace lab618
             void operator++()
             {
 
-                m_pCurrent = m_pCurrent->pnext;
+                m_pCurrent = m_pBegin;
+                if (m_pBegin)
+                    m_pBegin = m_pBegin->pnext;
             }
 
             void operator--()
@@ -323,7 +350,7 @@ namespace lab618
                 m_pCurrent = m_pCurrent->pprev;
             }
 
-            T& getData()
+            T getData()
             {
                 if (m_pCurrent)
                     return m_pCurrent->data;
@@ -334,6 +361,14 @@ namespace lab618
             {
                 if (m_pCurrent)
                     return m_pCurrent->data;
+            }
+
+            explicit operator bool() const
+            {
+                if (m_pCurrent != nullptr)
+                    return true;
+                else
+                    return false;
             }
 
             leaf* getLeaf()
@@ -453,15 +488,19 @@ namespace lab618
         // изменяет состояние итератора. выставляет предыдущую позицию.
         void erase(CIterator& it)
         {
-            leaf* tmpprev = it.m_pCurrent->pprev;
-            leaf* tmpnext = it.m_pCurrent->pnext;
-            if (tmpprev)
-                tmpprev->pnext = tmpnext;
-            else
-                m_pBegin = tmpnext;
-            tmpnext->pprev = tmpprev;
-            delete it.m_pCurrent;
-            it.m_pCurrent = tmpprev;
+            if (it)
+            {
+                leaf* tmpprev = it.m_pCurrent->pprev;
+                leaf* tmpnext = it.m_pCurrent->pnext;
+                if (tmpprev)
+                    tmpprev->pnext = tmpnext;
+                else
+                    m_pBegin = tmpnext;
+                if (tmpnext)
+                    tmpnext->pprev = tmpprev;
+                delete it.m_pCurrent;
+                it.m_pCurrent = tmpprev;
+            }
         }
 
         // изменяет состояние итератора. выставляет следующую позицию.
@@ -522,9 +561,10 @@ namespace lab618
 
                 }
 
-                m_pEnd = nullptr;
+
 
             }
+            m_pEnd = nullptr;
         }
 
         CIterator begin()
